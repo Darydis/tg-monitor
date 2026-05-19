@@ -68,6 +68,11 @@ body {
 .bar-row .bar > span { display: block; height: 100%; background: var(--accent); }
 .bar-row .v { text-align: right; font-variant-numeric: tabular-nums; }
 .bar-row .v small { color: var(--muted); }
+.commenter-row { display: grid; grid-template-columns: 240px 1fr 60px; gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.commenter-row:last-child { border-bottom: none; }
+.commenter-id { min-width: 0; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
+.commenter-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.commenter-handle { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
 th { color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -200,18 +205,23 @@ def generate(db_path=None, channel_title: str | None = None) -> Path:
 
     if tc:
         max_n = max(c["n"] for c in tc)
-        tc_rows = "".join(
-            f'<div class="bar-row">'
-            f'<div class="lbl" style="width:auto;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'
-            f'{html.escape(c["name"] or "—")}'
-            f'{(" " + html.escape("@" + c["username"])) if c["username"] else ""}'
-            f'</div>'
-            f'<div class="bar"><span style="width:{c["n"] / max_n * 100:.1f}%"></span></div>'
-            f'<div class="v">{c["n"]}</div>'
-            f'</div>'
-            for c in tc
-        )
-        tc_html = tc_rows
+        tc_rows = []
+        for c in tc:
+            handle = (
+                "@" + c["username"] if c["username"] else f"id={c['sender_id']}"
+            )
+            pct = c["n"] / max_n * 100
+            tc_rows.append(
+                f'<div class="commenter-row">'
+                f'<div class="commenter-id">'
+                f'<div class="commenter-name">{html.escape(c["name"] or "—")}</div>'
+                f'<div class="commenter-handle">{html.escape(handle)}</div>'
+                f'</div>'
+                f'<div class="bar"><span style="width:{pct:.1f}%"></span></div>'
+                f'<div class="v">{c["n"]}</div>'
+                f'</div>'
+            )
+        tc_html = "".join(tc_rows)
     else:
         tc_html = '<div class="empty">Нет комментариев в базе.</div>'
 
