@@ -19,7 +19,7 @@
 ## Установка
 
 ```bash
-cd /Users/msk-nb-hq-1170/Projects/tg_monitor
+cd ~/tg-monitor
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -99,9 +99,9 @@ launchctl load   ~/Library/LaunchAgents/com.tgmonitor.menubar.plist
 Если хочешь без launchd:
 
 ```cron
-0 * * * * cd /Users/msk-nb-hq-1170/Projects/tg_monitor && .venv/bin/python cli.py collect >> cron.log 2>&1
-30 9 * * * cd /Users/msk-nb-hq-1170/Projects/tg_monitor && .venv/bin/python cli.py subs >> cron.log 2>&1
-35 9 * * * cd /Users/msk-nb-hq-1170/Projects/tg_monitor && .venv/bin/python cli.py daily >> cron.log 2>&1
+0 * * * * cd ~/tg-monitor && .venv/bin/python cli.py collect >> cron.log 2>&1
+30 9 * * * cd ~/tg-monitor && .venv/bin/python cli.py subs >> cron.log 2>&1
+35 9 * * * cd ~/tg-monitor && .venv/bin/python cli.py daily >> cron.log 2>&1
 ```
 
 ## Ограничения Telegram User API

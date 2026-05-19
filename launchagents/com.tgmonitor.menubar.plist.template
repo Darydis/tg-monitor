@@ -6,11 +6,11 @@
     <string>com.tgmonitor.menubar</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/.venv/bin/python</string>
-        <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/menubar.py</string>
+        <string>__PROJECT_DIR__/.venv/bin/python</string>
+        <string>__PROJECT_DIR__/menubar.py</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor</string>
+    <string>__PROJECT_DIR__</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -18,8 +18,8 @@
     <key>ProcessType</key>
     <string>Interactive</string>
     <key>StandardOutPath</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/menubar.log</string>
+    <string>__PROJECT_DIR__/menubar.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/menubar.log</string>
+    <string>__PROJECT_DIR__/menubar.log</string>
 </dict>
 </plist>

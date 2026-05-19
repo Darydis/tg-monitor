@@ -6,12 +6,12 @@
     <string>com.tgmonitor.subs</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/.venv/bin/python</string>
-        <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/cli.py</string>
+        <string>__PROJECT_DIR__/.venv/bin/python</string>
+        <string>__PROJECT_DIR__/cli.py</string>
         <string>subs</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor</string>
+    <string>__PROJECT_DIR__</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -20,8 +20,8 @@
         <integer>30</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/launchd.log</string>
+    <string>__PROJECT_DIR__/launchd.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/msk-nb-hq-1170/Projects/tg_monitor/launchd.log</string>
+    <string>__PROJECT_DIR__/launchd.log</string>
 </dict>
 </plist>
