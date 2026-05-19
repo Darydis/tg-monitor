@@ -29,7 +29,8 @@ async def collect_comments(client, channel, conn) -> tuple[int, int | None]:
         "SELECT MAX(message_id) AS m FROM comments WHERE linked_chat_id = ?",
         (linked_id,),
     )
-    last_id = (cur.fetchone() or {}).get("m") or 0
+    row = cur.fetchone()
+    last_id = (row["m"] if row and row["m"] is not None else 0)
 
     count = 0
     try:

@@ -62,7 +62,6 @@ CREATE INDEX IF NOT EXISTS idx_events_at ON subscriber_events(detected_at);
 CREATE INDEX IF NOT EXISTS idx_comments_post ON comments(post_id);
 CREATE INDEX IF NOT EXISTS idx_comments_sender ON comments(sender_id);
 CREATE INDEX IF NOT EXISTS idx_comments_date ON comments(date);
-CREATE INDEX IF NOT EXISTS idx_posts_grouped ON posts(grouped_id);
 """
 
 
@@ -73,7 +72,7 @@ def _migrate(conn) -> None:
     cols = {row[1] for row in cur.fetchall()}
     if "grouped_id" not in cols:
         cur.execute("ALTER TABLE posts ADD COLUMN grouped_id INTEGER")
-        cur.execute("CREATE INDEX IF NOT EXISTS idx_posts_grouped ON posts(grouped_id)")
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_posts_grouped ON posts(grouped_id)")
     conn.commit()
 
 
