@@ -8,3 +8,5 @@ __pycache__/
 *.log
 dashboard.html
 .DS_Store
+backups/
+failed_posts_to_trim.md
