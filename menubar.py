@@ -49,7 +49,7 @@ class TgMonitorApp(rumps.App):
             rumps.MenuItem("📈 Открыть дашборд", callback=self.cb_dashboard),
             rumps.MenuItem("🔄 Обновить посты и комментарии", callback=self.cb_collect),
             rumps.MenuItem("👥 Обновить подписчиков", callback=self.cb_subs),
-            rumps.MenuItem("✉️ Отправить сводку в Saved Messages", callback=self.cb_daily),
+            rumps.MenuItem("✉️ Отправить сводку в личку", callback=self.cb_daily),
             None,
             rumps.MenuItem("📂 Папка проекта", callback=self.cb_open_folder),
             rumps.MenuItem("📝 Лог", callback=self.cb_open_log),
@@ -131,7 +131,7 @@ class TgMonitorApp(rumps.App):
         self._run_async("Снимок подписчиков", ["subs"])
 
     def cb_daily(self, _) -> None:
-        self._run_async("Сводка в Saved Messages", ["daily"])
+        self._run_async("Сводка в личку", ["daily"])
 
     def cb_open_folder(self, _) -> None:
         subprocess.run(["open", str(BASE)])

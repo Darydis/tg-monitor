@@ -1,6 +1,15 @@
 import argparse
 import asyncio
 
+# --- macOS 26 / Python 3.14 compat ------------------------------------------
+# На свежих macOS platform.mac_ver() возвращает пустую строку версии, из-за
+# чего telethon.crypto.libssl падает на release.split('.') (ValueError) ещё на
+# импорте. Подставляем валидную версию ДО импорта telethon.
+import platform as _platform
+if not _platform.mac_ver()[0]:
+    _platform.mac_ver = lambda *_a, **_k: ("11.0", ("", "", ""), "")
+# ----------------------------------------------------------------------------
+
 from telethon import TelegramClient
 
 import analytics
@@ -177,7 +186,8 @@ async def cmd_report() -> None:
 
 
 async def cmd_daily() -> None:
-    """Послать сводку в `Избранное` (Saved Messages) текущего пользователя."""
+    """Послать сводку по каналу владельцу (Даше) в личку — от лица Джаны. Раньше
+    уходила в Saved Messages учётки монитора (т.е. «Джане», не Даше)."""
     conn = db.connect(config.DB_PATH)
     client = await _make_client()
     try:
@@ -222,8 +232,18 @@ async def cmd_daily() -> None:
         if rs:
             lines.append("Реакции: " + " ".join(f"{e}×{c}" for e, c in rs))
 
-        await client.send_message("me", "\n".join(lines))
-        print("Сводка отправлена в Saved Messages.")
+        target = config.DAILY_TO or "me"
+        text = "\n".join(lines)
+        try:
+            await client.send_message(target, text)
+        except ValueError:
+            # сессия монитора могла не знать владельца по id (свежий session-файл без
+            # access_hash) — пробуем резолв с сервера (для @username сработает; для
+            # «голого» id нужно, чтобы учётка хоть раз видела этого пользователя).
+            entity = await client.get_entity(target)
+            await client.send_message(entity, text)
+        where = "в Saved Messages" if target == "me" else f"владельцу в личку ({target})"
+        print(f"Сводка отправлена {where}.")
     finally:
         await client.disconnect()
         conn.close()
@@ -242,7 +262,7 @@ def main() -> None:
     sub.add_parser("comments", help="Только комментарии")
     sub.add_parser("subs", help="Снять снимок подписчиков (нужны админ-права)")
     sub.add_parser("report", help="Отчёт в терминал")
-    sub.add_parser("daily", help="Отправить сводку в Saved Messages")
+    sub.add_parser("daily", help="Отправить сводку владельцу в личку (от Джаны)")
 
     args = parser.parse_args()
     if args.cmd == "collect":
